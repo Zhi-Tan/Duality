@@ -1,0 +1,10 @@
+```{r}
+ n. <- 100
+ t <- 1
+ n = t*n.
+ #Set interval as 1/n
+ bm <- c(0, cumsum(rnorm(n,0,1/n.)))
+ steps <- seq(0,t,length=n+1)
+ plot(steps,bm,type="l")
+ 
+```
