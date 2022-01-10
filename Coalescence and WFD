@@ -1,0 +1,96 @@
+```{r}
+#N number of iterations
+N=100
+sum=0
+k2=0
+
+for(N in 1:N){
+#Population size n
+m=1
+k2[N]<-0
+n=100
+g=n-2
+t_n=0
+
+for(i in 0:g){
+  k=n-i
+  tn = c(rexp(m,choose(n-i,2)))
+  t_n = t_n + tn
+  
+#k1 is number of individuals before time 1
+  if (t_n>1){
+    k1=k
+    
+    break}
+  
+  }
+  if (t_n<1){
+    k1=1
+    
+  }
+
+#0.5 initial value
+
+sum = sum + (0.5)^(k1)
+
+k2[N] = k2[N] + k1
+
+
+
+}
+
+
+expectation = sum/N
+
+print(expectation)
+
+```
+
+```{r}
+
+#Let k the number of times we want to repeat the simulation
+#and let initial sum of all X_t = 0
+k=100
+total <- 0
+
+
+for(m in 1:k) {
+  
+#To get our values for Brownian motion we first simulate a set of random deviates
+#Fix n. = 100 on the interval (0,1)
+ n. <- 100
+ t <- 1
+ n = t*n.
+ #Set interval as 1/n
+ bm <- c(0, cumsum(rnorm(n,0,1/n.)))
+ 
+
+#Now to get our set of values for Brownian motion we will find the change in value after time interval t
+i <- 0:n
+W_t <- bm[i+2] - bm[i+1]
+
+
+#Using SDE to find a value for X_t
+#Let initial value for X_t be say 0.5
+X_t <- (0.5)
+  
+for (i in 0:n) {
+X_t[i+2] <- ((0.5)*((X_t[i+1])*(1-X_t[i+1])^(0.5))*(W_t[i+1]))+(X_t[i+1])
+xt <- X_t[n+1]
+
+}
+
+#Sum up all the X_t from each iteration k times
+
+total = total + (xt)^(k2[m])
+
+}
+#Calcualte the expectation
+Expectation = (total)/k
+
+#Please note expectation is for the Kingman coalescent backward in time model whilst Expectation is for the WFD
+
+print(expectation)
+print(Expectation)
+
+```
